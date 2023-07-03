@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    tools:context=".EditPrizeActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+            <LinearLayout
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textViewPrizeTitle"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prize_title"
+                    android:textSize="30sp"
+                    android:fontFamily="casual"
+                    android:contentDescription="@string/prize_title"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/textInputPrizeTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/appCompatEditTextPrizeTitle"
+                        android:layout_width="299dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:hint="@string/prize_input_hint"
+                        android:labelFor="@+id/textViewPrizeTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        <ImageView
+            android:id="@+id/imageViewPrizeImage"
+            android:layout_width="550dp"
+            android:layout_height="550dp"
+            android:layout_weight="1"
+            android:background="@drawable/gift"
+            tools:background="@drawable/gift"
+            android:layout_margin="32dp"
+            android:contentDescription="@string/select_prize_image"/>
+        <Button
+            android:id="@+id/btnSelectPrizeImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:fontFamily="casual"
+            android:text="@string/select_prize_image"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/dark_blue"
+            android:layout_margin="16dp"/>
+        <Button
+            android:id="@+id/btnSavePrize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:fontFamily="casual"
+            android:text="@string/save_prize"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/mint_green"
+            android:layout_margin="16dp"/>
+
+    </LinearLayout>
+</ScrollView>

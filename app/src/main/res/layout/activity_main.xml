@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rainbow_blur"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="64dp"
+        android:fontFamily="casual"
+        android:layout_gravity="center"
+        android:text="@string/home_title"
+        android:textColor="@color/white"
+        android:textSize="45sp" />
+
+
+    <Button
+        android:id="@+id/btnPlayQuiz"
+        android:layout_width="wrap_content"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="@string/play_quiz"
+        android:backgroundTint="@color/green"
+        android:textColor="@color/black"
+        android:textSize="50sp"/>
+
+    <Button
+        android:id="@+id/btnSetupQuiz"
+        android:layout_width="wrap_content"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72sp"
+        android:backgroundTint="@color/sky_blue"
+        android:fontFamily="casual"
+        android:text="@string/setup_quiz"
+        android:textColor="@color/black"
+        android:textSize="28sp" />
+</LinearLayout>
