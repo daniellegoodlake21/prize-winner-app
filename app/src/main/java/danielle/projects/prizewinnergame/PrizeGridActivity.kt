@@ -20,6 +20,7 @@ class PrizeGridActivity : AppCompatActivity() {
         val btnStartQuiz: Button = findViewById(R.id.btnStartQuiz)
         btnStartQuiz.setOnClickListener{
             val intent = Intent(this, QuizQuestionActivity::class.java)
+            intent.putExtra(Constants.QUESTION_ID_EXTRA, 0)
             startActivity(intent)
             finish()
         }

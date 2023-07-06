@@ -66,7 +66,7 @@ class QuestionSetupAdapter(private val mList: List<QuestionViewModel>) : Recycle
 
         override fun onClick(v: View?) {
             val intent = Intent(v?.context, EditQuestionActivity::class.java)
-            intent.putExtra("questionId", adapterPosition.toString())
+            intent.putExtra(Constants.QUESTION_ID_EXTRA, adapterPosition.toString())
             v?.context?.startActivity(intent)
         }
     }

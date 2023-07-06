@@ -16,7 +16,7 @@ class EditQuestionActivity : EditableImageActivity() {
         // load values
         val extras = intent.extras
 
-        val questionId = extras?.getString("questionId")?.toInt()
+        val questionId = extras?.getString(Constants.QUESTION_ID_EXTRA)?.toInt()
 
         val imageHandler = ImageHandler()
         val questionFileHandler = QuestionFileHandler(filesDir.path)

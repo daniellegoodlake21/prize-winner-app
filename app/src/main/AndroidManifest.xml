@@ -17,6 +17,9 @@
         android:theme="@style/Theme.PrizeWinnerGame"
         tools:targetApi="31">
         <activity
+            android:name=".PrizePickerGridActivity"
+            android:exported="false" />
+        <activity
             android:name=".QuizQuestionActivity"
             android:exported="false" />
         <activity
