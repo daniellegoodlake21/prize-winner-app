@@ -1,12 +1,11 @@
 package danielle.projects.prizewinnergame
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 
-class PrizePickerGridActivity : AppCompatActivity(), View.OnClickListener {
+class PrizePickerGridActivity : TimerDisplayActivity(), View.OnClickListener {
 
     private var prizes : ArrayList<ImageView>? = null
 
@@ -31,8 +30,8 @@ class PrizePickerGridActivity : AppCompatActivity(), View.OnClickListener {
         {
             if (Constants.prizeManager.prizePreviouslySelected(i))
             {
-                prizes!![i].setImageResource(R.drawable.unknown_prize_selected)
                 prizes!![i].isClickable = false
+                prizes!![i].setImageResource(R.drawable.unknown_prize_selected)
             }
         }
     }
@@ -53,12 +52,22 @@ class PrizePickerGridActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.imageViewPrize9 -> Constants.prizeManager.winPrize(8)
                 else -> return
             }
-            val extras = intent.extras
-            val nextQuestionId = extras?.getInt(Constants.QUESTION_ID_EXTRA, 0)
-            val intent = Intent(this, QuizQuestionActivity::class.java)
-            intent.putExtra(Constants.QUESTION_ID_EXTRA, nextQuestionId)
-            startActivity(intent)
+            val allPrizesWon = Constants.prizeManager.allPrizesSelected()
+            if (allPrizesWon)
+            {
+                val intent = Intent(this, PrizeResultsActivity::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                val extras = intent.extras
+                val nextQuestionId = extras?.getInt(Constants.QUESTION_ID_EXTRA, 0)
+                val intent = Intent(this, QuizQuestionActivity::class.java)
+                intent.putExtra(Constants.QUESTION_ID_EXTRA, nextQuestionId)
+                startActivity(intent)
+            }
             finish()
+
         }
     }
 }

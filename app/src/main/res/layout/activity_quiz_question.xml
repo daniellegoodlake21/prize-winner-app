@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".QuizQuestionActivity"
     android:orientation="vertical">
+    <TextView
+        android:id="@+id/textViewTimeLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:textSize="60sp"
+        android:text="@string/string_empty_string"
+        tools:text="60"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/dark_blue"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +57,8 @@
             android:textStyle="bold"
             android:fontFamily="casual"
             android:textSize="32sp"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true" />
 
         <TextView
             android:id="@+id/textViewChoiceB"
@@ -62,6 +74,7 @@
             android:textStyle="bold"
             android:fontFamily="casual"
             android:textSize="32sp"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 </LinearLayout>

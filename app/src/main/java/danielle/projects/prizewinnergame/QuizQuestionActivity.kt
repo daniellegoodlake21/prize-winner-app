@@ -1,12 +1,11 @@
 package danielle.projects.prizewinnergame
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.ImageView
 import android.widget.TextView
 
-class QuizQuestionActivity : AppCompatActivity() {
+class QuizQuestionActivity : TimerDisplayActivity() {
 
     private var questionFileHandler: QuestionFileHandler? = null
     private var imageHandler: ImageHandler? = null
@@ -59,25 +58,28 @@ class QuizQuestionActivity : AppCompatActivity() {
             window.decorView.setBackgroundColor(getColor(R.color.warning_red))
         }
         val instance = this
-        object : CountDownTimer(500, 500) {
+        object : CountDownTimer(500, 500)
+        {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
-                if (questionId!! < Constants.NUMBER_OF_QUESTIONS - 1)
+                questionId = if (questionId!! == Constants.NUMBER_OF_QUESTIONS - 1)
                 {
-                    questionId = questionId?.plus(1)
-                    if (correct)
-                    {
-                        val intent = Intent(instance, PrizePickerGridActivity::class.java) // instance used
-                        // instead of 'this' keyword because 'this' now refers to the count down timer object
-                        intent.putExtra(Constants.QUESTION_ID_EXTRA, questionId)
-                        startActivity(intent)
-                        finish()
-                    }
-                    else
-                    {
-                        window.decorView.setBackgroundColor(getColor(R.color.white))
-                        loadQuestion()
-                    }
+                    0 // cause the questions to loop once run out of questions
+                } else {
+                    questionId?.plus(1)
+                }
+                if (correct)
+                {
+                    val intent = Intent(instance, PrizePickerGridActivity::class.java) // instance used
+                    // instead of 'this' keyword because 'this' now refers to the count down timer object
+                    intent.putExtra(Constants.QUESTION_ID_EXTRA, questionId)
+                    startActivity(intent)
+                    finish()
+                }
+                else
+                {
+                    window.decorView.setBackgroundColor(getColor(R.color.white))
+                    loadQuestion()
                 }
             }
         }.start()

@@ -3,21 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PrizePickerGridActivity"
+    tools:context=".PrizeResultsActivity"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/textViewTimeLimit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:gravity="center"
-        android:textSize="60sp"
-        android:text="@string/string_empty_string"
-        tools:text="60"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:textColor="@color/dark_blue"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,16 +13,15 @@
         android:gravity="center">
         <TextView
             android:gravity="center"
-            android:id="@+id/textViewPickAPrize"
+            android:id="@+id/textViewPrizeResults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
             android:layout_marginBottom="64dp"
             android:fontFamily="casual"
             android:layout_gravity="center"
-            android:text="@string/pick_a_prize"
+            android:text="@string/string_empty_string"
             android:textStyle="bold"
-            android:textColor="@color/mint_green"
             android:textSize="45sp" />
 
     </LinearLayout>
@@ -54,9 +40,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize" />
         <ImageView
 
             android:id="@+id/imageViewPrize2"
@@ -65,9 +49,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
 
             android:id="@+id/imageViewPrize3"
@@ -76,9 +58,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize"/>
     </LinearLayout>
     <LinearLayout
 
@@ -96,9 +76,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
 
             android:id="@+id/imageViewPrize5"
@@ -107,9 +85,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize" />
         <ImageView
 
             android:id="@+id/imageViewPrize6"
@@ -118,9 +94,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -136,9 +110,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:id="@+id/imageViewPrize8"
             android:layout_width="200dp"
@@ -146,9 +118,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize" />
         <ImageView
             android:id="@+id/imageViewPrize9"
             android:layout_width="200dp"
@@ -156,9 +126,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
-            android:contentDescription="@string/pick_a_prize"
-            android:clickable="true"
-            android:focusable="true" />
+            android:contentDescription="@string/pick_a_prize"/>
     </LinearLayout>
 
 

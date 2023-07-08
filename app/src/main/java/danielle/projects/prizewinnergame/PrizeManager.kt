@@ -7,22 +7,53 @@ object PrizeManager {
 
     init {
         this.prizes = mutableListOf(0, 1, 2, 3, 4, 5, 6, 7, 8)
-        this.availablePrizes = this.prizes
+        this.availablePrizes = this.prizes!!.toMutableList()
         this.prizes!!.shuffle()
     }
 
     fun winPrize(prizeIndex: Int)
     {
-        this.availablePrizes?.set(prizeIndex, -1)
+        availablePrizes?.set(prizeIndex, -1)
     }
 
     fun prizePreviouslySelected(prizeIndex: Int): Boolean
     {
-        if (availablePrizes != null && prizeIndex < this.availablePrizes!!.size)
+        if (availablePrizes != null && prizeIndex < availablePrizes!!.size)
         {
-            return this.availablePrizes!![prizeIndex] == -1
+            return availablePrizes!![prizeIndex] == -1
         }
         return false
+    }
+
+    fun allPrizesSelected(): Boolean
+    {
+        if (availablePrizes != null) {
+            for (prize in availablePrizes!!)
+            {
+                if (prize != -1)
+                {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    fun getPrizes(): MutableList<Int>
+    {
+        val wonPrizes = mutableListOf<Int>()
+        if (availablePrizes != null && prizes != null)
+        {
+            for (i in 0 until Constants.NUMBER_OF_PRIZES)
+            {
+                if (availablePrizes!![i] == -1)
+                {
+                    val prizeId = prizes!![i]
+                    wonPrizes.add(prizeId)
+                }
+            }
+        }
+        return wonPrizes
     }
 
 }
