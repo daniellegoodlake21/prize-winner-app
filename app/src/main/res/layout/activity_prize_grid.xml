@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:gravity="center"
-        android:textSize="60sp"
-        android:text="@string/string_empty_string"
+        android:textSize="12sp"
+        android:text="@string/true_empty"
         tools:text="60"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -30,19 +30,22 @@
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,19 +59,23 @@
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,19 +89,22 @@
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
-            android:background="@drawable/unknown_prize"/>
+            android:background="@drawable/unknown_prize"
+            android:contentDescription="@string/pick_a_prize"/>
     </LinearLayout>
 
     <TextView
@@ -102,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="32dp"
         android:layout_marginHorizontal="70dp"
-        android:textSize="28dp"
+        android:textSize="28sp"
         android:fontFamily="casual"
         android:textStyle="bold"
         android:text="@string/prize_grid_instructions"/>
@@ -117,7 +127,7 @@
         android:layout_marginVertical="16dp"
         android:text="@string/start_quiz"
         android:fontFamily="casual"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:backgroundTint="@color/mint_green"/>
 
     <Button
@@ -130,7 +140,7 @@
         android:layout_marginVertical="32dp"
         android:text="@string/back"
         android:fontFamily="casual"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:backgroundTint="@color/warning_red"/>
 
 </LinearLayout>

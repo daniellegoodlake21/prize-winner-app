@@ -71,6 +71,9 @@ class EditQuestionActivity : EditableImageActivity() {
         // save question on click
         btnSaveQuestion.setOnClickListener{
             imageHandler.saveImage(bitmapImage,this, "Question", questionId)
+
+            // despite the warnings which say 'has already been looked up in this method'
+            // it is necessary to re-find them in order to get the updated values
             val q: String = findViewById<EditText>(R.id.appCompatEditTextQuestionTitle).text.toString()
             val a: String = findViewById<EditText>(R.id.appCompatEditTextQuestionChoiceA).text.toString()
             val b: String = findViewById<EditText>(R.id.appCompatEditTextQuestionChoiceB).text.toString()

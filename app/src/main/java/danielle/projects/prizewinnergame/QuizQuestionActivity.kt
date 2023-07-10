@@ -5,23 +5,31 @@ import android.os.CountDownTimer
 import android.widget.ImageView
 import android.widget.TextView
 
-class QuizQuestionActivity : TimerDisplayActivity() {
+open class QuizQuestionActivity : TimerDisplayActivity() {
 
-    private var questionFileHandler: QuestionFileHandler? = null
-    private var imageHandler: ImageHandler? = null
-    private var correctAnswer: Int? = null
-    private var questionId: Int? = null
+    protected var questionFileHandler: QuestionFileHandler? = null
+    protected var imageHandler: ImageHandler? = null
+    protected var correctAnswer: Int? = null
+    open var questionId: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_question)
         questionFileHandler = QuestionFileHandler(filesDir.absolutePath)
         imageHandler = ImageHandler()
         val extras = intent.extras
-        questionId = extras?.getInt(Constants.QUESTION_ID_EXTRA, 0)
+        // if questionId has been overridden (as is the case for the final question) it does not need to be assigned here
+        if (questionId == null)
+        {
+            questionId = extras?.getInt(Constants.QUESTION_ID_EXTRA, 0)
+        }
         loadQuestion()
     }
 
-    private fun loadQuestion()
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        return
+    }
+    protected open fun loadQuestion()
     {
         val question: QuestionViewModel = questionFileHandler!!.readQuestion(questionId!!)
 
@@ -46,7 +54,7 @@ class QuizQuestionActivity : TimerDisplayActivity() {
         correctAnswer = question.correctAnswer
     }
 
-    private fun handleAnswer(selectedAnswerIndex: Int)
+    protected fun setScreenBackgroundColor(selectedAnswerIndex: Int): Boolean
     {
         val correct = correctAnswer == selectedAnswerIndex
         if (correct)
@@ -57,6 +65,11 @@ class QuizQuestionActivity : TimerDisplayActivity() {
         {
             window.decorView.setBackgroundColor(getColor(R.color.warning_red))
         }
+        return correct
+    }
+    private fun handleAnswer(selectedAnswerIndex: Int)
+    {
+        val correct = setScreenBackgroundColor(selectedAnswerIndex)
         val instance = this
         object : CountDownTimer(500, 500)
         {
@@ -65,7 +78,9 @@ class QuizQuestionActivity : TimerDisplayActivity() {
                 questionId = if (questionId!! == Constants.NUMBER_OF_QUESTIONS - 1)
                 {
                     0 // cause the questions to loop once run out of questions
-                } else {
+                }
+                else
+                {
                     questionId?.plus(1)
                 }
                 if (correct)

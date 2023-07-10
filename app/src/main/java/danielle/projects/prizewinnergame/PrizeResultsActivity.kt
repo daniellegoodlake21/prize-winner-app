@@ -1,16 +1,21 @@
 package danielle.projects.prizewinnergame
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 
 class PrizeResultsActivity : AppCompatActivity() {
 
+    private var fromFinalQuestionActivity: Boolean? = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_prize_results)
+        stopService(Intent(this, QuizTimerService::class.java))
+        fromFinalQuestionActivity = intent.extras?.getBoolean(Constants.IS_FINAL_QUESTION_FLAG, false)
         loadResults()
     }
 
@@ -21,26 +26,64 @@ class PrizeResultsActivity : AppCompatActivity() {
             findViewById(R.id.imageViewPrize4), findViewById(R.id.imageViewPrize5),
             findViewById(R.id.imageViewPrize6), findViewById(R.id.imageViewPrize7),
             findViewById(R.id.imageViewPrize8), findViewById(R.id.imageViewPrize9))
-        val prizeIds = Constants.prizeManager.getPrizes()
+        val prizeIds = Constants.PRIZE_MANAGER.getPrizes()
         val imageHandler = ImageHandler()
         for (i in 0 until prizeIds.size)
         {
             imageHandler.loadImage(prizes[i], "Prize", prizeIds[i])
         }
-        // set a relevant results header
+        // set a relevant results header and hide/change buttons as necessary
         val textViewPrizeResults: TextView = findViewById(R.id.textViewPrizeResults)
-        if (prizeIds.size == 0)
-        {
-            textViewPrizeResults.text = "You didn't win any prizes. But you can answer one final question with unlimited time to win them all!"
+
+        val btnTakeTrade: Button = findViewById(R.id.btnTakeTrade)
+        val btnTakePrizes: Button = findViewById(R.id.btnTakePrizes)
+
+        btnTakeTrade.setOnClickListener{
+            val intent = Intent(this, FinalQuizQuestionActivity::class.java)
+            startActivity(intent)
+            finish()
         }
-        else if (prizeIds.size < prizes.size)
+
+        btnTakePrizes.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        if (fromFinalQuestionActivity != true)
         {
-            textViewPrizeResults.text = "You won some awesome prizes! But you can trade them for one final question in hopes of winning them all... but if you answer incorrectly, you lose the prizes you already have. Take the trade?"
+            if (prizeIds.size == 0)
+            {
+                textViewPrizeResults.text = getString(R.string.won_no_prizes)
+                btnTakePrizes.text = getString(R.string.leave_without_prizes)
+            }
+            else if (prizeIds.size < prizes.size)
+            {
+                textViewPrizeResults.text = getString(R.string.won_some_prizes)
+            }
+            else
+            {
+                textViewPrizeResults.text = getString(R.string.won_all_prizes)
+                btnTakeTrade.visibility = View.GONE
+                btnTakePrizes.text = getString(R.string.finish)
+            }
         }
         else
         {
-            textViewPrizeResults.text = "You have won all of these amazing prizes! Congratulations!"
+            // there are only two possibilities here: you win them all or lose them all
+            if (prizeIds.size == 0)
+            {
+                textViewPrizeResults.text = getString(R.string.won_no_prizes_final)
+            }
+            else
+            {
+                textViewPrizeResults.text = getString(R.string.won_all_prizes_final)
+            }
+            // regardless of the outcome, the user can now only finish the quiz
+            btnTakeTrade.visibility = View.GONE
+            btnTakePrizes.text = getString(R.string.finish)
         }
+
     }
 
 }

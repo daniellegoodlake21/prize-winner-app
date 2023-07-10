@@ -135,4 +135,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pick_a_prize">Correct!\n Pick a Prize:</string>
+    <string name="true_empty" />
+    <string name="take_prizes">Take Current Prizes</string>
+    <string name="take_trade">Take Trade</string>
+    <string name="won_no_prizes">You didn\'t win any prizes. But you can answer one final question with unlimited time to win them all!</string>
+    <string name="leave_without_prizes">Leave Without Prizes</string>
+    <string name="won_some_prizes">You won some awesome prizes! But you can trade them for one final question in hopes of winning them all... but if you answer incorrectly, you lose the prizes you already have. Take the trade?</string>
+    <string name="won_all_prizes">You have won all of these amazing prizes! Congratulations!</string>
+    <string name="finish">Finish</string>
+    <string name="final_question">Final Question</string>
+    <string name="questions">Questions</string>
+    <string name="prizes">Prizes</string>
+    <string name="won_no_prizes_final">Unfortunately, you answered incorrectly and have lost the prizes. Better luck next time!</string>
+    <string name="won_all_prizes_final">You answered correctly and won all the prizes! Congratulations!</string>
 </resources>

@@ -7,7 +7,6 @@ import android.widget.EditText
 class EditPrizeActivity : EditableImageActivity() {
 
     override val imageSideLength = 400
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_prize)

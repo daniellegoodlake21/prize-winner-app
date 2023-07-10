@@ -29,7 +29,12 @@ class ImageHandler {
             }
             else
             {
-                val filename = "${imageType}_$imageIndex.jpg"
+
+                var filename = "${imageType}_$imageIndex.jpg"
+                if (imageIndex == -1)
+                {
+                    filename = "${imageType}_FinalQuestion.jpg"
+                }
                 val file = File(folder, filename)
                 if (!file.exists()) {
                     return false
@@ -60,7 +65,12 @@ class ImageHandler {
             {
                 folder.mkdirs()
             }
-            val file = File(folder, "${imageType}_$imageIndex.jpg")
+            var filename = "${imageType}_$imageIndex.jpg"
+            if (imageIndex == -1)
+            {
+                filename = "${imageType}_FinalQuestion.jpg"
+            }
+            val file = File(folder, filename)
             try
             {
                 if (!file.exists())

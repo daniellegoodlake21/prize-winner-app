@@ -19,9 +19,13 @@ class QuestionFileHandler(directory: String)
             if (!folder.exists()) {
                 folder.mkdirs()
             }
-                val filename = "QuestionFile_${question.questionId}.txt"
-                val file = File(folder, filename)
-                file.writeText(contents)
+            var filename = "QuestionFile_${question.questionId}.txt"
+            if (question.questionId == -1)
+            {
+                filename = "QuestionFile_FinalQuestion.txt"
+            }
+            val file = File(folder, filename)
+            file.writeText(contents)
             return true
         }
         catch (e: Exception)
@@ -36,7 +40,12 @@ class QuestionFileHandler(directory: String)
     {
         try {
             val folder = File(directory,"//PrizeWinner//Questions")
-            val file = File(folder, "QuestionFile_$questionId.txt")
+            var filename = "QuestionFile_$questionId.txt"
+            if (questionId == -1)
+            {
+                filename = "QuestionFile_FinalQuestion.txt"
+            }
+            val file = File(folder, filename)
             if (file.exists())
             {
                 val contents: List<String> = file.readLines()

@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:text="@string/string_empty_string"
             android:textStyle="bold"
-            android:textSize="45sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -35,8 +35,8 @@
         <ImageView
 
             android:id="@+id/imageViewPrize1"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
@@ -44,8 +44,8 @@
         <ImageView
 
             android:id="@+id/imageViewPrize2"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
@@ -53,8 +53,8 @@
         <ImageView
 
             android:id="@+id/imageViewPrize3"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
@@ -71,8 +71,8 @@
         <ImageView
 
             android:id="@+id/imageViewPrize4"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
@@ -80,8 +80,8 @@
         <ImageView
 
             android:id="@+id/imageViewPrize5"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
@@ -89,8 +89,8 @@
         <ImageView
 
             android:id="@+id/imageViewPrize6"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
@@ -105,24 +105,24 @@
         android:gravity="center">
         <ImageView
             android:id="@+id/imageViewPrize7"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
             android:contentDescription="@string/pick_a_prize"/>
         <ImageView
             android:id="@+id/imageViewPrize8"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
             android:contentDescription="@string/pick_a_prize" />
         <ImageView
             android:id="@+id/imageViewPrize9"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/unknown_prize"
@@ -130,5 +130,30 @@
     </LinearLayout>
 
 
+    <Button
+        android:id="@+id/btnTakePrizes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="64dp"
+        android:paddingVertical="8dp"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginVertical="32dp"
+        android:text="@string/take_prizes"
+        android:fontFamily="casual"
+        android:textSize="40sp"
+        android:backgroundTint="@color/pale_gold"/>
+
+    <Button
+        android:id="@+id/btnTakeTrade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="64dp"
+        android:paddingVertical="8dp"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginVertical="16dp"
+        android:text="@string/take_trade"
+        android:fontFamily="casual"
+        android:textSize="40sp"
+        android:backgroundTint="@android:color/holo_purple"/>
 
 </LinearLayout>

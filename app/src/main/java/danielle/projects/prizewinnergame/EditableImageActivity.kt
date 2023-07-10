@@ -21,6 +21,8 @@ open class EditableImageActivity : AppCompatActivity() {
         try {
             selectedPhotoUri?.let {
                 if(Build.VERSION.SDK_INT < 28) {
+
+                    @Suppress("DEPRECATION")
                     val bitmap = MediaStore.Images.Media.getBitmap(
                         this.contentResolver,
                         selectedPhotoUri

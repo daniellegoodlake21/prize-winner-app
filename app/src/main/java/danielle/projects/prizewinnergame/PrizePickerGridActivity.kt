@@ -24,11 +24,15 @@ class PrizePickerGridActivity : TimerDisplayActivity(), View.OnClickListener {
         greyOutPreviouslyPickedPrizes()
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        return
+    }
     private fun greyOutPreviouslyPickedPrizes()
     {
         for (i in 0 until Constants.NUMBER_OF_PRIZES)
         {
-            if (Constants.prizeManager.prizePreviouslySelected(i))
+            if (Constants.PRIZE_MANAGER.prizePreviouslySelected(i))
             {
                 prizes!![i].isClickable = false
                 prizes!![i].setImageResource(R.drawable.unknown_prize_selected)
@@ -41,21 +45,22 @@ class PrizePickerGridActivity : TimerDisplayActivity(), View.OnClickListener {
         {
             when(v.id)
             {
-                R.id.imageViewPrize1 -> Constants.prizeManager.winPrize(0)
-                R.id.imageViewPrize2 -> Constants.prizeManager.winPrize(1)
-                R.id.imageViewPrize3 -> Constants.prizeManager.winPrize(2)
-                R.id.imageViewPrize4 -> Constants.prizeManager.winPrize(3)
-                R.id.imageViewPrize5 -> Constants.prizeManager.winPrize(4)
-                R.id.imageViewPrize6 -> Constants.prizeManager.winPrize(5)
-                R.id.imageViewPrize7 -> Constants.prizeManager.winPrize(6)
-                R.id.imageViewPrize8 -> Constants.prizeManager.winPrize(7)
-                R.id.imageViewPrize9 -> Constants.prizeManager.winPrize(8)
+                R.id.imageViewPrize1 -> Constants.PRIZE_MANAGER.winPrize(0)
+                R.id.imageViewPrize2 -> Constants.PRIZE_MANAGER.winPrize(1)
+                R.id.imageViewPrize3 -> Constants.PRIZE_MANAGER.winPrize(2)
+                R.id.imageViewPrize4 -> Constants.PRIZE_MANAGER.winPrize(3)
+                R.id.imageViewPrize5 -> Constants.PRIZE_MANAGER.winPrize(4)
+                R.id.imageViewPrize6 -> Constants.PRIZE_MANAGER.winPrize(5)
+                R.id.imageViewPrize7 -> Constants.PRIZE_MANAGER.winPrize(6)
+                R.id.imageViewPrize8 -> Constants.PRIZE_MANAGER.winPrize(7)
+                R.id.imageViewPrize9 -> Constants.PRIZE_MANAGER.winPrize(8)
                 else -> return
             }
-            val allPrizesWon = Constants.prizeManager.allPrizesSelected()
+            val allPrizesWon = Constants.PRIZE_MANAGER.allPrizesSelected()
             if (allPrizesWon)
             {
                 val intent = Intent(this, PrizeResultsActivity::class.java)
+                intent.putExtra(Constants.IS_FINAL_QUESTION_FLAG, false)
                 startActivity(intent)
             }
             else

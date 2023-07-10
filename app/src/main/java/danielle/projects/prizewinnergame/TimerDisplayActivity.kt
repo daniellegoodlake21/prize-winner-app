@@ -64,6 +64,7 @@ open class TimerDisplayActivity : AppCompatActivity() {
         else if (intent.action == QuizTimerService.COUNTDOWN_FINISH_BROADCAST_INTENT)
         {
             val resultIntent = Intent(this, PrizeResultsActivity::class.java)
+            intent.putExtra(Constants.IS_FINAL_QUESTION_FLAG, false)
             startActivity(resultIntent)
             finish()
         }

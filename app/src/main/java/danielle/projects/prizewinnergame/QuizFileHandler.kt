@@ -39,7 +39,11 @@ class QuizFileHandler(directory: String)
             val file = File(folder, "QuizBasicInfo.txt")
             if (file.exists())
             {
-                val quizTitle: String = file.readLines()[0]
+                var quizTitle: String = file.readLines()[0]
+                if (quizTitle == "")
+                {
+                    quizTitle = "Prize Winner"
+                }
                 val timeLimit: Int = file.readLines()[1].toInt()
                 return QuizBasicInfo(quizTitle, timeLimit)
             }
@@ -49,6 +53,6 @@ class QuizFileHandler(directory: String)
             println("Error loading quiz basic info")
             e.printStackTrace()
         }
-        return QuizBasicInfo("Default Quiz Title", 60)
+        return QuizBasicInfo("Prize Winner", 60)
     }
 }

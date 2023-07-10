@@ -54,6 +54,14 @@
         </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/questions"
+            android:fontFamily="casual"
+            android:textSize="24sp"
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="32dp"/>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_marginHorizontal="32dp"
@@ -72,7 +80,41 @@
                 tools:listitem="@layout/question_setup_view_design">
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/final_question"
+            android:fontFamily="casual"
+            android:textSize="24sp"
 
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="32dp"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="32dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="30dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/final_question_recycler_view"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/question_setup_view_design">
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/prizes"
+            android:fontFamily="casual"
+            android:textSize="24sp"
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="32dp"/>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_marginHorizontal="32dp"
