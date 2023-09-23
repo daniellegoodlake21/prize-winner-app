@@ -47,11 +47,8 @@ class EditPrizeActivity : EditableImageActivity() {
             // image selection handling on click
             val btnSelectPrizeImage: Button? = binding?.btnSelectPrizeImage
             btnSelectPrizeImage?.setOnClickListener{
-                val intent = Intent()
-                intent.type = "image/*"
-                intent.action = Intent.ACTION_GET_CONTENT
-                getContent.launch("image/*")
-        }
+                handlePermissions()
+           }
 
         // save question on click
         btnSavePrize?.setOnClickListener{
@@ -63,9 +60,6 @@ class EditPrizeActivity : EditableImageActivity() {
             val intent = Intent(this, SetupQuizBasics::class.java)
             startActivity(intent)
         }
-
-        val permissions = Array(2) { android.Manifest.permission.WRITE_EXTERNAL_STORAGE; android.Manifest.permission.READ_EXTERNAL_STORAGE  }
-        requestPermissions(permissions,1024)
     }
 
     override fun onDestroy() {

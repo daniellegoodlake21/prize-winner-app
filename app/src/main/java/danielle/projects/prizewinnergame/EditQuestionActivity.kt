@@ -71,10 +71,7 @@ class EditQuestionActivity : EditableImageActivity() {
         // image selection handling on click
         btnSelectQuestionImage = binding?.btnSelectQuestionImage
         btnSelectQuestionImage?.setOnClickListener{
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            getContent.launch("image/*")
+            handlePermissions()
         }
 
         // save question on click
@@ -105,8 +102,6 @@ class EditQuestionActivity : EditableImageActivity() {
             startActivity(intent)
         }
 
-        val permissions = Array(2) { android.Manifest.permission.WRITE_EXTERNAL_STORAGE; android.Manifest.permission.READ_EXTERNAL_STORAGE  }
-        requestPermissions(permissions,1024)
     }
 
     override fun onDestroy() {

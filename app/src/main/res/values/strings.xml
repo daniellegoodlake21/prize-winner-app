@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PrizeWinnerGame</string>
+    <string name="app_name">Prize Winner Game</string>
     <string name="home_title">Prize Winner</string>
     <string name="setup_quiz">Setup Quiz</string>
     <string name="play_quiz">Play Quiz</string>

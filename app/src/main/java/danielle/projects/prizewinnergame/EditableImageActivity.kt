@@ -1,14 +1,16 @@
 package danielle.projects.prizewinnergame
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 open class EditableImageActivity : AppCompatActivity() {
@@ -16,13 +18,44 @@ open class EditableImageActivity : AppCompatActivity() {
     open val imageSideLength: Int = 200
     var bitmapImage: Bitmap? = null
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-    }
-    val getContent = registerForActivityResult(ActivityResultContracts.GetContent())
+    protected fun handlePermissions()
     {
-            selectedPhotoUri: Uri? ->
+        var permission: String = Manifest.permission.READ_EXTERNAL_STORAGE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            permission = Manifest.permission.READ_MEDIA_IMAGES
+        }
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED)
+        {
+            imagesResultLauncher.launch("image/*")
+        }
+        else if (checkSelfPermission(permission) == PackageManager.PERMISSION_DENIED)
+        {
+            if (shouldShowRequestPermissionRationale(permission))
+            {
+                // only called if user has already denied image access
+                showRationaleDialog("Prize Winner requires image access", "Access to images is denied but needed to customise question and prize images.")
+            }
+            else
+            {
+                requestPermissions(arrayOf(permission), 1024)
+            }
+        }
 
+
+    }
+    private fun showRationaleDialog(title: String, message: String) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setIcon(R.drawable.gift)
+        builder.setPositiveButton("Okay"){dialog, _ -> dialog.dismiss()}
+        builder.create().show()
+    }
+
+    private val imagesResultLauncher: ActivityResultLauncher<String> = registerForActivityResult(ActivityResultContracts.GetContent())
+    {
+        selectedPhotoUri: Uri? ->
         try {
             selectedPhotoUri?.let {
                 if(Build.VERSION.SDK_INT < 28) {
@@ -42,7 +75,8 @@ open class EditableImageActivity : AppCompatActivity() {
                     bitmapImage = bitmap
                 }
             }
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             e.printStackTrace()
         }
     }
