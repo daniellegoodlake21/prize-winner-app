@@ -2,56 +2,62 @@ package danielle.projects.prizewinnergame
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
+import danielle.projects.prizewinnergame.databinding.ActivityEditPrizeBinding
 
 class EditPrizeActivity : EditableImageActivity() {
 
+    private var binding: ActivityEditPrizeBinding? = null
+
     override val imageSideLength = 400
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_prize)
+    private var textInputPrizeTitle: AppCompatEditText? = null
 
-        imageView = findViewById(R.id.imageViewPrizeImage)
-        val btnSavePrize: Button = findViewById(R.id.btnSavePrize)
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            binding = ActivityEditPrizeBinding.inflate(layoutInflater)
+            setContentView(binding?.root)
 
-        // load values
-        val extras = intent.extras
+            imageView = binding?.imageViewPrizeImage
+            val btnSavePrize: Button? = binding?.btnSavePrize
 
-        val prizeId = extras?.getString("prizeId")?.toInt()
+            // load values
+            val extras = intent.extras
 
-        val imageHandler = ImageHandler()
+            val prizeId = extras?.getString("prizeId")?.toInt()
 
-        val prizeFileHandler = PrizeFileHandler(filesDir.path)
-        val currentPrize = prizeFileHandler.readPrize(prizeId!!)
+            val imageHandler = ImageHandler()
 
-        val prizeTitle = currentPrize.title
-        val textInputPrizeTitle: EditText = findViewById(R.id.appCompatEditTextPrizeTitle)
-        textInputPrizeTitle.setText(prizeTitle)
+            val prizeFileHandler = PrizeFileHandler(filesDir.path)
+            val currentPrize = prizeFileHandler.readPrize(prizeId!!)
 
-        prizeId.let {
+            val prizeTitle = currentPrize.title
+            textInputPrizeTitle = binding?.appCompatEditTextPrizeTitle
+            textInputPrizeTitle?.setText(prizeTitle)
 
-            // load image if any otherwise default gift image
-            val imageLoaded = imageHandler.loadImage(imageView!!, "Prize", it)
-            if (!imageLoaded)
-            {
-                imageView!!.setImageResource(R.drawable.gift)
+            prizeId.let {
+
+                // load image if any otherwise default gift image
+                val imageLoaded = imageHandler.loadImage(imageView!!, "Prize", it)
+                if (!imageLoaded)
+                {
+                    imageView!!.setImageResource(R.drawable.gift)
+                }
             }
-        }
 
-        // image selection handling on click
-        val btnSelectPrizeImage: Button = findViewById(R.id.btnSelectPrizeImage)
-        btnSelectPrizeImage.setOnClickListener{
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            getContent.launch("image/*")
+            // image selection handling on click
+            val btnSelectPrizeImage: Button? = binding?.btnSelectPrizeImage
+            btnSelectPrizeImage?.setOnClickListener{
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                getContent.launch("image/*")
         }
 
         // save question on click
-        btnSavePrize.setOnClickListener{
+        btnSavePrize?.setOnClickListener{
             imageHandler.saveImage(bitmapImage,this, "Prize", prizeId)
-            val t: String = findViewById<EditText>(R.id.appCompatEditTextPrizeTitle).text.toString()
-            val prizeToSave = PrizeViewModel(t, prizeId)
+            val title: String = binding?.appCompatEditTextPrizeTitle?.text.toString()
+            val prizeToSave = PrizeViewModel(title, prizeId)
             prizeFileHandler.savePrize(prizeToSave)
             // go back to overview of quiz page
             val intent = Intent(this, SetupQuizBasics::class.java)
@@ -60,5 +66,10 @@ class EditPrizeActivity : EditableImageActivity() {
 
         val permissions = Array(2) { android.Manifest.permission.WRITE_EXTERNAL_STORAGE; android.Manifest.permission.READ_EXTERNAL_STORAGE  }
         requestPermissions(permissions,1024)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

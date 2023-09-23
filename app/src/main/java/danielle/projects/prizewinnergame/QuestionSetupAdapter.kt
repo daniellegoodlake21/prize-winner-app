@@ -64,6 +64,7 @@ class QuestionSetupAdapter(private val mList: List<QuestionViewModel>) : Recycle
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View, finalQuestion: Boolean) : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
+        
         val imageViewQuestionImage: ImageView = itemView.findViewById(R.id.imageViewQuestionImage)
         val textViewQuestion: TextView = itemView.findViewById(R.id.textViewQuestionTitle)
         val textViewChoiceA: TextView = itemView.findViewById(R.id.textViewQuestionChoiceA)

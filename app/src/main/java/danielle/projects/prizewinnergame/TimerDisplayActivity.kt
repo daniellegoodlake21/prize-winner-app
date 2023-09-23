@@ -3,8 +3,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -69,5 +67,4 @@ open class TimerDisplayActivity : AppCompatActivity() {
             finish()
         }
     }
-
 }

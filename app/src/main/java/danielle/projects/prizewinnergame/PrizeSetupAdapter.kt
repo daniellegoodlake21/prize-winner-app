@@ -53,4 +53,5 @@ class PrizeSetupAdapter(private val mList: List<PrizeViewModel>) : RecyclerView.
             v?.context?.startActivity(intent)
         }
     }
+
 }

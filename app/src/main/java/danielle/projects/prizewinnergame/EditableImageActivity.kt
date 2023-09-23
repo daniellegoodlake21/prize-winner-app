@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +16,9 @@ open class EditableImageActivity : AppCompatActivity() {
     open val imageSideLength: Int = 200
     var bitmapImage: Bitmap? = null
 
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+    }
     val getContent = registerForActivityResult(ActivityResultContracts.GetContent())
     {
             selectedPhotoUri: Uri? ->

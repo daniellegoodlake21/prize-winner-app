@@ -4,22 +4,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import danielle.projects.prizewinnergame.databinding.ActivityPrizePickerGridBinding
 
 class PrizePickerGridActivity : TimerDisplayActivity(), View.OnClickListener {
 
-    private var prizes : ArrayList<ImageView>? = null
+    private var binding: ActivityPrizePickerGridBinding? = null
+
+    private var prizes : ArrayList<ImageView?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_prize_picker_grid)
-        prizes = arrayListOf(findViewById(R.id.imageViewPrize1),
-        findViewById(R.id.imageViewPrize2), findViewById(R.id.imageViewPrize3),
-        findViewById(R.id.imageViewPrize4), findViewById(R.id.imageViewPrize5),
-        findViewById(R.id.imageViewPrize6), findViewById(R.id.imageViewPrize7),
-        findViewById(R.id.imageViewPrize8), findViewById(R.id.imageViewPrize9))
+        binding = ActivityPrizePickerGridBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        prizes = arrayListOf(binding?.imageViewPrize1,
+        binding?.imageViewPrize2, binding?.imageViewPrize3, binding?.imageViewPrize4, binding?.imageViewPrize5, binding?.imageViewPrize6,
+        binding?.imageViewPrize7, binding?.imageViewPrize8, binding?.imageViewPrize9)
         for (prize in prizes!!)
         {
-            prize.setOnClickListener(this)
+            prize?.setOnClickListener(this)
         }
         greyOutPreviouslyPickedPrizes()
     }
@@ -34,8 +36,8 @@ class PrizePickerGridActivity : TimerDisplayActivity(), View.OnClickListener {
         {
             if (Constants.PRIZE_MANAGER.prizePreviouslySelected(i))
             {
-                prizes!![i].isClickable = false
-                prizes!![i].setImageResource(R.drawable.unknown_prize_selected)
+                prizes!![i]?.isClickable = false
+                prizes!![i]?.setImageResource(R.drawable.unknown_prize_selected)
             }
         }
     }
@@ -74,5 +76,10 @@ class PrizePickerGridActivity : TimerDisplayActivity(), View.OnClickListener {
             finish()
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

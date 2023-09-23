@@ -22,7 +22,7 @@ class ImageHandler {
             return false
         }
         try {
-            val folder = File(view.context.getExternalFilesDir(null)!!.path,  "PrizeWinner/Images/${imageType}s")
+            val folder = File(view.context.filesDir.path,  "PrizeWinner/Images/${imageType}s")
             if (!folder.exists())
             {
                 return false
@@ -37,6 +37,17 @@ class ImageHandler {
                 }
                 val file = File(folder, filename)
                 if (!file.exists()) {
+                    /* if the user has not selected an image then use the default
+                    image placeholder for the question or prize
+                     */
+                    if (imageType == "Question")
+                    {
+                        view.setImageResource(R.drawable.question_mark)
+                    }
+                    else
+                    {
+                        view.setImageResource(R.drawable.unknown_prize)
+                    }
                     return false
                 }
                 var bitmap: Bitmap = BitmapFactory.decodeFile(file.absolutePath)
@@ -44,8 +55,7 @@ class ImageHandler {
                 view.setImageBitmap(bitmap)
             }
         }
-        catch (e: Exception)
-        {
+        catch (e: Exception) {
             e.printStackTrace()
             return false
         }
@@ -60,7 +70,7 @@ class ImageHandler {
             {
                 return false
             }
-            val folder = File(context.getExternalFilesDir(null)!!.path, "PrizeWinner/Images/${imageType}s")
+            val folder = File(context.filesDir.path, "PrizeWinner/Images/${imageType}s")
             if (!folder.exists())
             {
                 folder.mkdirs()

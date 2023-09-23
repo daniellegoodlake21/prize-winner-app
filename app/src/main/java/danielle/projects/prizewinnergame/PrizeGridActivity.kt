@@ -2,21 +2,29 @@ package danielle.projects.prizewinnergame
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import danielle.projects.prizewinnergame.databinding.ActivityPrizeGridBinding
 
 class PrizeGridActivity : TimerDisplayActivity() {
+
+    private var binding: ActivityPrizeGridBinding? = null
+
+    private var btnBack: Button? = null
+    private var btnStartQuiz: Button? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_prize_grid)
+        binding = ActivityPrizeGridBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        val btnBack: Button = findViewById(R.id.btnBack)
-        btnBack.setOnClickListener{
+        btnBack = binding?.btnBack
+        btnBack?.setOnClickListener{
             val intent = Intent(this, PrizeShowcaseActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        val btnStartQuiz: Button = findViewById(R.id.btnStartQuiz)
-        btnStartQuiz.setOnClickListener{
+        btnStartQuiz = binding?.btnStartQuiz
+        btnStartQuiz?.setOnClickListener{
             Constants.PRIZE_MANAGER.resetPrizes() // in case the quiz has been played before
             // without exiting the app
             val intent = Intent(this, QuizQuestionActivity::class.java)
@@ -28,4 +36,8 @@ class PrizeGridActivity : TimerDisplayActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }

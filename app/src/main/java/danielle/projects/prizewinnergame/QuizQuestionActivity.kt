@@ -4,16 +4,26 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.ImageView
 import android.widget.TextView
+import danielle.projects.prizewinnergame.databinding.ActivityQuizQuestionBinding
 
 open class QuizQuestionActivity : TimerDisplayActivity() {
+
+    private var binding: ActivityQuizQuestionBinding? = null
 
     protected var questionFileHandler: QuestionFileHandler? = null
     protected var imageHandler: ImageHandler? = null
     protected var correctAnswer: Int? = null
     open var questionId: Int? = null
+
+    private var textViewQuestionTitle: TextView? = null
+    private var textViewChoiceA: TextView? = null
+    private var textViewChoiceB: TextView? = null
+    private var imageViewQuestionImage: ImageView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_quiz_question)
+        binding = ActivityQuizQuestionBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
         questionFileHandler = QuestionFileHandler(filesDir.absolutePath)
         imageHandler = ImageHandler()
         val extras = intent.extras
@@ -33,23 +43,25 @@ open class QuizQuestionActivity : TimerDisplayActivity() {
     {
         val question: QuestionViewModel = questionFileHandler!!.readQuestion(questionId!!)
 
-        val textViewQuestionTitle: TextView = findViewById(R.id.textViewQuestionTitle)
-        textViewQuestionTitle.text = question.question
+        textViewQuestionTitle = binding?.textViewQuestionTitle
+        textViewQuestionTitle?.text = question.question
 
-        val textViewChoiceA: TextView = findViewById(R.id.textViewChoiceA)
-        textViewChoiceA.text = question.choiceA
-        textViewChoiceA.setOnClickListener{
+        textViewChoiceA = binding?.textViewChoiceA
+        textViewChoiceA?.text = question.choiceA
+        textViewChoiceA?.setOnClickListener{
             handleAnswer(0)
         }
 
-        val textViewChoiceB: TextView = findViewById(R.id.textViewChoiceB)
-        textViewChoiceB.text = question.choiceB
-        textViewChoiceB.setOnClickListener{
+        textViewChoiceB = binding?.textViewChoiceB
+        textViewChoiceB?.text = question.choiceB
+        textViewChoiceB?.setOnClickListener{
             handleAnswer(1)
         }
 
-        val imageViewQuestionImage: ImageView = findViewById(R.id.imageViewQuestionImage)
-        imageHandler!!.loadImage(imageViewQuestionImage, "Question", questionId!!)
+        imageViewQuestionImage = binding?.imageViewQuestionImage
+        imageViewQuestionImage?.let {
+            imageHandler!!.loadImage(imageViewQuestionImage!!, "Question", questionId!!)
+        }
 
         correctAnswer = question.correctAnswer
     }
@@ -70,7 +82,6 @@ open class QuizQuestionActivity : TimerDisplayActivity() {
     private fun handleAnswer(selectedAnswerIndex: Int)
     {
         val correct = setScreenBackgroundColor(selectedAnswerIndex)
-        val instance = this
         object : CountDownTimer(500, 500)
         {
             override fun onTick(millisUntilFinished: Long) {}
@@ -85,8 +96,7 @@ open class QuizQuestionActivity : TimerDisplayActivity() {
                 }
                 if (correct)
                 {
-                    val intent = Intent(instance, PrizePickerGridActivity::class.java) // instance used
-                    // instead of 'this' keyword because 'this' now refers to the count down timer object
+                    val intent = Intent(this@QuizQuestionActivity, PrizePickerGridActivity::class.java)
                     intent.putExtra(Constants.QUESTION_ID_EXTRA, questionId)
                     startActivity(intent)
                     finish()
@@ -100,4 +110,8 @@ open class QuizQuestionActivity : TimerDisplayActivity() {
         }.start()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }

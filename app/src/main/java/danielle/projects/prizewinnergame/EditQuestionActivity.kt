@@ -4,14 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import danielle.projects.prizewinnergame.databinding.ActivityEditQuestionBinding
 
 class EditQuestionActivity : EditableImageActivity() {
 
+
+    private var binding: ActivityEditQuestionBinding? = null
+
+    private var btnSelectQuestionImage: Button? = null
+    private var btnSaveQuestion: Button? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_question)
+        binding = ActivityEditQuestionBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+
+
         imageView = findViewById(R.id.imageViewQuestionImage)
-        val btnSaveQuestion: Button = findViewById(R.id.btnSaveQuestion)
+        btnSaveQuestion = binding?.btnSaveQuestion
 
         // load values
         val extras = intent.extras
@@ -60,8 +69,8 @@ class EditQuestionActivity : EditableImageActivity() {
             }
         }
         // image selection handling on click
-        val btnSelectQuestionImage: Button = findViewById(R.id.btnSelectQuestionImage)
-        btnSelectQuestionImage.setOnClickListener{
+        btnSelectQuestionImage = binding?.btnSelectQuestionImage
+        btnSelectQuestionImage?.setOnClickListener{
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -69,24 +78,24 @@ class EditQuestionActivity : EditableImageActivity() {
         }
 
         // save question on click
-        btnSaveQuestion.setOnClickListener{
+        btnSaveQuestion?.setOnClickListener{
             imageHandler.saveImage(bitmapImage,this, "Question", questionId)
 
             // despite the warnings which say 'has already been looked up in this method'
             // it is necessary to re-find them in order to get the updated values
-            val q: String = findViewById<EditText>(R.id.appCompatEditTextQuestionTitle).text.toString()
-            val a: String = findViewById<EditText>(R.id.appCompatEditTextQuestionChoiceA).text.toString()
-            val b: String = findViewById<EditText>(R.id.appCompatEditTextQuestionChoiceB).text.toString()
-            val c: String = findViewById<EditText>(R.id.appCompatEditTextCorrectAnswer).text.toString()
+            val thisQuestion: String = binding?.appCompatEditTextQuestionTitle?.text.toString()
+            val currentChoiceA: String = binding?.appCompatEditTextQuestionChoiceA?.text.toString()
+            val currentChoiceB: String = binding?.appCompatEditTextQuestionChoiceB?.text.toString()
+            val correctChoice: String = binding?.appCompatEditTextCorrectAnswer?.text.toString()
             var correct = 0
-            if (c == "B")
+            if (correctChoice == "B")
             {
                 correct = 1
             }
             val questionToSave = QuestionViewModel(
-                    q,
-                    a,
-                    b,
+                    thisQuestion,
+                    currentChoiceA,
+                    currentChoiceB,
                     correct,
                     questionId
                 )
@@ -98,5 +107,10 @@ class EditQuestionActivity : EditableImageActivity() {
 
         val permissions = Array(2) { android.Manifest.permission.WRITE_EXTERNAL_STORAGE; android.Manifest.permission.READ_EXTERNAL_STORAGE  }
         requestPermissions(permissions,1024)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

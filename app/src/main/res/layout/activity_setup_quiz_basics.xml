@@ -71,7 +71,7 @@
             app:cardCornerRadius="10dp"
             app:cardElevation="30dp">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/question_setup_recycler_view"
+                android:id="@+id/questionSetupRecyclerView"
                 android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
             app:cardCornerRadius="10dp"
             app:cardElevation="30dp">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/final_question_recycler_view"
+                android:id="@+id/finalQuestionRecyclerView"
                 android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
         app:cardCornerRadius="10dp"
         app:cardElevation="30dp">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/prize_setup_recycler_view"
+            android:id="@+id/prizeSetupRecyclerView"
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

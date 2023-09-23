@@ -13,21 +13,32 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import danielle.projects.prizewinnergame.databinding.ActivityPrizeShowcaseBinding
 
 
 class PrizeShowcaseActivity : AppCompatActivity() {
+
+    private var binding: ActivityPrizeShowcaseBinding? = null
+
+    private var btnNext: Button? = null
+    private var btnBack: Button? = null
+    private var progressBar: ProgressBar? = null
+    private var imageView: ImageView? = null
+    private var prizeTitleTextView: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_prize_showcase)
+        binding = ActivityPrizeShowcaseBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        val btnNext: Button = findViewById(R.id.btnNext)
-        btnNext.setOnClickListener{
+        btnNext = binding?.btnNext
+        btnNext?.setOnClickListener{
             val intent = Intent(this, PrizeGridActivity::class.java)
             startActivity(intent)
         }
 
-        val btnBack: Button = findViewById(R.id.btnBack)
-        btnBack.setOnClickListener{
+        btnBack = binding?.btnBack
+        btnBack?.setOnClickListener{
             val intent = Intent(this, QuizInstructions::class.java)
             startActivity(intent)
             finish()
@@ -38,54 +49,60 @@ class PrizeShowcaseActivity : AppCompatActivity() {
 
     private fun displayPrizeImage(prizeIndex: Int)
     {
-        val imageView: ImageView = findViewById(R.id.imageViewPrizeShowcase)
+        imageView = binding?.imageViewPrizeShowcase
         val imageHandler = ImageHandler()
-        imageHandler.loadImage(imageView, "Prize", prizeIndex)
+        imageView?.let {
+            imageHandler.loadImage(imageView!!, "Prize", prizeIndex)
+            // handle progress bar
+            progressBar = binding?.progressBarPrizeShowcase
+            progressBar?.progress = prizeIndex + 1
 
-        // handle progress bar
-        val progressBar: ProgressBar = findViewById(R.id.progressBarPrizeShowcase)
-        progressBar.progress = prizeIndex + 1
+            // set prize title text
+            val prizeFileHandler = PrizeFileHandler(filesDir.absolutePath)
+            val prizeTitle: String = prizeFileHandler.readPrize(prizeIndex).title
+            prizeTitleTextView = binding?.textViewPrizeTitle
+            prizeTitleTextView?.text = prizeTitle
 
-        // set prize title text
-        val prizeFileHandler = PrizeFileHandler(filesDir.absolutePath)
-        val prizeTitle: String = prizeFileHandler.readPrize(prizeIndex).title
-        val prizeTitleTextView: TextView = findViewById(R.id.textViewPrizeTitle)
-        prizeTitleTextView.text = prizeTitle
+            // handle animation
+            val fadeIn = AlphaAnimation(0f, 1f)
+            fadeIn.interpolator = DecelerateInterpolator()
+            fadeIn.duration = 1000
 
-        // handle animation
-        val fadeIn = AlphaAnimation(0f, 1f)
-        fadeIn.interpolator = DecelerateInterpolator()
-        fadeIn.duration = 1000
+            val fadeOut = AlphaAnimation(1f, 0f)
+            fadeOut.interpolator = AccelerateInterpolator()
+            fadeOut.startOffset = 3000
+            fadeOut.duration = 1000
 
-        val fadeOut = AlphaAnimation(1f, 0f)
-        fadeOut.interpolator = AccelerateInterpolator()
-        fadeOut.startOffset = 3000
-        fadeOut.duration = 1000
+            val animation = AnimationSet(false)
+            animation.addAnimation(fadeIn)
+            animation.addAnimation(fadeOut)
 
-        val animation = AnimationSet(false)
-        animation.addAnimation(fadeIn)
-        animation.addAnimation(fadeOut)
-
-        // loop through the prize images
-        animation.setAnimationListener(object : AnimationListener {
-            override fun onAnimationEnd(animation: Animation) {
-                if (Constants.NUMBER_OF_PRIZES - 1 > prizeIndex) {
-                    displayPrizeImage(prizeIndex + 1)
-                } else {
-                    displayPrizeImage(0)
+            // loop through the prize images
+            animation.setAnimationListener(object : AnimationListener {
+                override fun onAnimationEnd(animation: Animation) {
+                    if (Constants.NUMBER_OF_PRIZES - 1 > prizeIndex) {
+                        displayPrizeImage(prizeIndex + 1)
+                    } else {
+                        displayPrizeImage(0)
+                    }
                 }
-            }
 
-            override fun onAnimationRepeat(animation: Animation) {
-                // TODO Auto-generated method stub
-            }
+                override fun onAnimationRepeat(animation: Animation) {
+                    // TODO Auto-generated method stub
+                }
 
-            override fun onAnimationStart(animation: Animation) {
-                // TODO Auto-generated method stub
-            }
-        })
+                override fun onAnimationStart(animation: Animation) {
+                    // TODO Auto-generated method stub
+                }
+            })
 
-        imageView.animation = animation
+            imageView!!.animation = animation
+        }
+
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }
