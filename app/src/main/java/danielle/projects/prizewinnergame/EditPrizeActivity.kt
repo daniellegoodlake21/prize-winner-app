@@ -2,15 +2,17 @@ package danielle.projects.prizewinnergame
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.widget.AppCompatEditText
+import androidx.lifecycle.lifecycleScope
 import danielle.projects.prizewinnergame.databinding.ActivityEditPrizeBinding
+import kotlinx.coroutines.launch
 
 class EditPrizeActivity : EditableImageActivity() {
 
     private var binding: ActivityEditPrizeBinding? = null
 
+    private var prizeDao: PrizeDao? = null
+
     override val imageSideLength = 400
-    private var textInputPrizeTitle: AppCompatEditText? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -27,17 +29,12 @@ class EditPrizeActivity : EditableImageActivity() {
 
             val imageHandler = ImageHandler()
 
-            val prizeFileHandler = PrizeFileHandler(filesDir.path)
-            val currentPrize = prizeFileHandler.readPrize(prizeId!!)
-
-            val prizeTitle = currentPrize.title
-            textInputPrizeTitle = binding?.appCompatEditTextPrizeTitle
-            textInputPrizeTitle?.setText(prizeTitle)
-
             prizeId.let {
-
+                lifecycleScope.launch {
+                    loadRecord(prizeId!!)
+                }
                 // load image if any otherwise default gift image
-                val imageLoaded = imageHandler.loadImage(imageView!!, "Prize", it)
+                val imageLoaded = imageHandler.loadImage(imageView!!, "Prize", it!!)
                 if (!imageLoaded)
                 {
                     imageView!!.setImageResource(R.drawable.gift)
@@ -52,15 +49,45 @@ class EditPrizeActivity : EditableImageActivity() {
 
         // save question on click
         btnSavePrize?.setOnClickListener{
-            imageHandler.saveImage(bitmapImage,this, "Prize", prizeId)
-            val title: String = binding?.appCompatEditTextPrizeTitle?.text.toString()
-            val prizeToSave = PrizeViewModel(title, prizeId)
-            prizeFileHandler.savePrize(prizeToSave)
+            imageHandler.saveImage(bitmapImage,this, "Prize", prizeId!!)
+
+            lifecycleScope.launch {
+                updateRecord(prizeId)
+                val intent = Intent(this@EditPrizeActivity, SetupQuizBasicsActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
             // go back to overview of quiz page
-            val intent = Intent(this, SetupQuizBasics::class.java)
-            startActivity(intent)
+
         }
     }
+
+    private suspend fun loadRecord(prizeId: Int)
+    {
+        // load the prize
+        prizeDao = (application as PrizeWinnerApp).database.prizeDao()
+        prizeDao?.fetchPrizeById(prizeId)?.collect{ prize ->
+            binding?.appCompatEditTextPrizeTitle?.setText(prize.title)
+        }
+    }
+
+    private suspend fun updateRecord(prizeId: Int)
+    {
+        // save the image
+        val imageHandler = ImageHandler()
+        imageHandler.saveImage(bitmapImage,this, "Prize", prizeId)
+
+        // save the updated prize
+        val prizeTitle: String = binding?.appCompatEditTextPrizeTitle?.text.toString()
+        val prizeEntity = PrizeEntity(prizeId, prizeTitle)
+
+        prizeDao?.update(prizeEntity)
+        // go back to overview of quiz page
+        val intent = Intent(this@EditPrizeActivity, SetupQuizBasicsActivity::class.java)
+        startActivity(intent)
+
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

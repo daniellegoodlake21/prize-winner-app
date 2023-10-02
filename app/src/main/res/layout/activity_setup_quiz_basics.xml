@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sky_blue"
-    tools:context=".SetupQuizBasics"
+    tools:context=".SetupQuizBasicsActivity"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,16 +70,24 @@
             android:layout_marginTop="32dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="30dp">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/questionSetupRecyclerView"
-                android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="20"
-                tools:listitem="@layout/question_setup_view_design">
-            </androidx.recyclerview.widget.RecyclerView>
+                tools:itemCount="5"
+                tools:listitem="@layout/question_setup_view_design"/>
         </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/btnAddNewQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:padding="16dp"
+            android:text="@string/add_new_question"
+            android:backgroundTint="@color/pale_gold"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,15 +105,15 @@
             android:layout_marginTop="32dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="30dp">
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/finalQuestionRecyclerView"
-                android:padding="16dp"
+                android:id="@+id/finalQuestionSetupRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="1"
-                tools:listitem="@layout/question_setup_view_design">
-            </androidx.recyclerview.widget.RecyclerView>
+                tools:listitem="@layout/question_setup_view_design"/>
         </androidx.cardview.widget.CardView>
         <TextView
             android:layout_width="match_parent"
@@ -130,6 +138,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="9"
+            android:minHeight="500dp"
             tools:listitem="@layout/prize_setup_view_design">
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.cardview.widget.CardView>

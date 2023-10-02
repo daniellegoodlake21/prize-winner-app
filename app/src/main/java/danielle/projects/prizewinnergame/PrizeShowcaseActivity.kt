@@ -13,7 +13,9 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import danielle.projects.prizewinnergame.databinding.ActivityPrizeShowcaseBinding
+import kotlinx.coroutines.launch
 
 
 class PrizeShowcaseActivity : AppCompatActivity() {
@@ -43,11 +45,12 @@ class PrizeShowcaseActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        displayPrizeImage(0)
+        lifecycleScope.launch {
+            displayPrizeImage(1)
+        }
     }
 
-    private fun displayPrizeImage(prizeIndex: Int)
+    private suspend fun displayPrizeImage(prizeIndex: Int)
     {
         imageView = binding?.imageViewPrizeShowcase
         val imageHandler = ImageHandler()
@@ -55,48 +58,55 @@ class PrizeShowcaseActivity : AppCompatActivity() {
             imageHandler.loadImage(imageView!!, "Prize", prizeIndex)
             // handle progress bar
             progressBar = binding?.progressBarPrizeShowcase
-            progressBar?.progress = prizeIndex + 1
+            progressBar?.progress = prizeIndex
+
 
             // set prize title text
-            val prizeFileHandler = PrizeFileHandler(filesDir.absolutePath)
-            val prizeTitle: String = prizeFileHandler.readPrize(prizeIndex).title
             prizeTitleTextView = binding?.textViewPrizeTitle
-            prizeTitleTextView?.text = prizeTitle
+            val prizeDao = (application as PrizeWinnerApp).database.prizeDao()
+            prizeDao.fetchPrizeById(prizeIndex).collect{
+                prize ->
+                prizeTitleTextView?.text = prize.title
+                // handle animation
+                val fadeIn = AlphaAnimation(0f, 1f)
+                fadeIn.interpolator = DecelerateInterpolator()
+                fadeIn.duration = 1000
 
-            // handle animation
-            val fadeIn = AlphaAnimation(0f, 1f)
-            fadeIn.interpolator = DecelerateInterpolator()
-            fadeIn.duration = 1000
+                val fadeOut = AlphaAnimation(1f, 0f)
+                fadeOut.interpolator = AccelerateInterpolator()
+                fadeOut.startOffset = 3000
+                fadeOut.duration = 1000
 
-            val fadeOut = AlphaAnimation(1f, 0f)
-            fadeOut.interpolator = AccelerateInterpolator()
-            fadeOut.startOffset = 3000
-            fadeOut.duration = 1000
+                val animation = AnimationSet(false)
+                animation.addAnimation(fadeIn)
+                animation.addAnimation(fadeOut)
 
-            val animation = AnimationSet(false)
-            animation.addAnimation(fadeIn)
-            animation.addAnimation(fadeOut)
-
-            // loop through the prize images
-            animation.setAnimationListener(object : AnimationListener {
-                override fun onAnimationEnd(animation: Animation) {
-                    if (Constants.NUMBER_OF_PRIZES - 1 > prizeIndex) {
-                        displayPrizeImage(prizeIndex + 1)
-                    } else {
-                        displayPrizeImage(0)
+                // loop through the prize images
+                animation.setAnimationListener(object : AnimationListener {
+                    override fun onAnimationEnd(animation: Animation) {
+                        lifecycleScope.launch {
+                            if (Constants.NUMBER_OF_PRIZES > prizeIndex) {
+                                displayPrizeImage(prizeIndex + 1)
+                            } else {
+                                displayPrizeImage(1)
+                            }
+                        }
                     }
-                }
 
-                override fun onAnimationRepeat(animation: Animation) {
-                    // TODO Auto-generated method stub
-                }
+                    override fun onAnimationRepeat(animation: Animation) {
+                        // TODO Auto-generated method stub
+                    }
 
-                override fun onAnimationStart(animation: Animation) {
-                    // TODO Auto-generated method stub
-                }
-            })
+                    override fun onAnimationStart(animation: Animation) {
+                        // TODO Auto-generated method stub
+                    }
+                })
 
-            imageView!!.animation = animation
+                imageView!!.animation = animation
+            }
+
+
+
         }
 
     }

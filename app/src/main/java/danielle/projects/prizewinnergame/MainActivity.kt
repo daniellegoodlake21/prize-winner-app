@@ -4,8 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import danielle.projects.prizewinnergame.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         btnSetupQuiz = binding?.btnSetupQuiz
         btnSetupQuiz?.setOnClickListener{
-            val intent = Intent(this, SetupQuizBasics::class.java)
+            val intent = Intent(this, SetupQuizBasicsActivity::class.java)
             startActivity(intent)
         }
 
@@ -31,12 +32,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // set the quiz title from setup quiz
-        val quizFileHandler = QuizFileHandler(filesDir.absolutePath)
-        val quizTitle = quizFileHandler.readQuiz().quizTitle
+        lifecycleScope.launch {
+            // set the quiz title from setup quiz
+            val quizDao = (application as PrizeWinnerApp).database.quizDao()
+            quizDao.fetchQuizCount().collect { quizCount ->
+                if (quizCount == 0) {
+                    quizDao.insertDefaultQuiz()
+                }
+                quizDao.fetchAllQuizzes().collect { quizAsList ->
+                    val quizTitle = quizAsList[0].title
+                    binding?.textViewQuizTitle?.text = quizTitle
+                }
+            }
+        }
 
-        val textViewQuizTitle: TextView = findViewById(R.id.textViewQuizTitle)
-        textViewQuizTitle.text = quizTitle
     }
 
     override fun onDestroy() {

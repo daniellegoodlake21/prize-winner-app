@@ -148,4 +148,6 @@
     <string name="prizes">Prizes</string>
     <string name="won_no_prizes_final">Unfortunately, you answered incorrectly and have lost the prizes. Better luck next time!</string>
     <string name="won_all_prizes_final">You answered correctly and won all the prizes! Congratulations!</string>
+    <string name="add_new_question">Add New Question</string>
+    <string name="delete_question">Delete</string>
 </resources>

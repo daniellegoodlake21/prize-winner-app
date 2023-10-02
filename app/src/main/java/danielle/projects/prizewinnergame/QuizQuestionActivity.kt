@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import danielle.projects.prizewinnergame.databinding.ActivityQuizQuestionBinding
+import kotlinx.coroutines.launch
 
 open class QuizQuestionActivity : TimerDisplayActivity() {
 
     private var binding: ActivityQuizQuestionBinding? = null
 
-    protected var questionFileHandler: QuestionFileHandler? = null
     protected var imageHandler: ImageHandler? = null
     protected var correctAnswer: Int? = null
     open var questionId: Int? = null
@@ -24,46 +25,52 @@ open class QuizQuestionActivity : TimerDisplayActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityQuizQuestionBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        questionFileHandler = QuestionFileHandler(filesDir.absolutePath)
         imageHandler = ImageHandler()
         val extras = intent.extras
-        // if questionId has been overridden (as is the case for the final question) it does not need to be assigned here
+        // if id has been overridden (as is the case for the final question) it does not need to be assigned here
         if (questionId == null)
         {
             questionId = extras?.getInt(Constants.QUESTION_ID_EXTRA, 0)
         }
-        loadQuestion()
+        lifecycleScope.launch {
+            loadQuestion()
+        }
+
     }
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         return
     }
-    protected open fun loadQuestion()
+    protected open suspend fun loadQuestion()
     {
-        val question: QuestionViewModel = questionFileHandler!!.readQuestion(questionId!!)
+        val questionDao = (application as PrizeWinnerApp).database.questionDao()
+        questionDao.fetchAllTimedQuestions().collect{ timedQuestions ->
+            val question: QuestionEntity = timedQuestions[questionId!!]
 
-        textViewQuestionTitle = binding?.textViewQuestionTitle
-        textViewQuestionTitle?.text = question.question
+            textViewQuestionTitle = binding?.textViewQuestionTitle
+            textViewQuestionTitle?.text = question.question
 
-        textViewChoiceA = binding?.textViewChoiceA
-        textViewChoiceA?.text = question.choiceA
-        textViewChoiceA?.setOnClickListener{
-            handleAnswer(0)
+            textViewChoiceA = binding?.textViewChoiceA
+            textViewChoiceA?.text = question.choiceA
+            textViewChoiceA?.setOnClickListener{
+                handleAnswer(0)
+            }
+
+            textViewChoiceB = binding?.textViewChoiceB
+            textViewChoiceB?.text = question.choiceB
+            textViewChoiceB?.setOnClickListener{
+                handleAnswer(1)
+            }
+
+            imageViewQuestionImage = binding?.imageViewQuestionImage
+            imageViewQuestionImage?.let {
+                imageHandler!!.loadImage(imageViewQuestionImage!!, "Question", question.id)
+            }
+
+            correctAnswer = question.correctAnswer
         }
 
-        textViewChoiceB = binding?.textViewChoiceB
-        textViewChoiceB?.text = question.choiceB
-        textViewChoiceB?.setOnClickListener{
-            handleAnswer(1)
-        }
-
-        imageViewQuestionImage = binding?.imageViewQuestionImage
-        imageViewQuestionImage?.let {
-            imageHandler!!.loadImage(imageViewQuestionImage!!, "Question", questionId!!)
-        }
-
-        correctAnswer = question.correctAnswer
     }
 
     protected fun setScreenBackgroundColor(selectedAnswerIndex: Int): Boolean
@@ -86,26 +93,35 @@ open class QuizQuestionActivity : TimerDisplayActivity() {
         {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
-                questionId = if (questionId!! == Constants.NUMBER_OF_QUESTIONS - 1)
-                {
-                    0 // cause the questions to loop once run out of questions
+                lifecycleScope.launch {
+                    val questionDao = (application as PrizeWinnerApp).database.questionDao()
+                    questionDao.fetchTimedQuestionCount().collect{timedQuestionCount ->
+                        questionId = if (questionId!! == timedQuestionCount - 1)
+                        {
+                            0 // cause the questions to loop once run out of questions
+                        }
+                        else
+                        {
+                            questionId?.plus(1)
+                        }
+                        if (correct)
+                        {
+                            val intent = Intent(this@QuizQuestionActivity, PrizePickerGridActivity::class.java)
+                            intent.putExtra(Constants.QUESTION_ID_EXTRA, questionId)
+                            startActivity(intent)
+                            finish()
+                        }
+                        else
+                        {
+                            window.decorView.setBackgroundColor(getColor(R.color.white))
+                            lifecycleScope.launch {
+                                loadQuestion()
+                            }
+
+                        }
+                    }
                 }
-                else
-                {
-                    questionId?.plus(1)
-                }
-                if (correct)
-                {
-                    val intent = Intent(this@QuizQuestionActivity, PrizePickerGridActivity::class.java)
-                    intent.putExtra(Constants.QUESTION_ID_EXTRA, questionId)
-                    startActivity(intent)
-                    finish()
-                }
-                else
-                {
-                    window.decorView.setBackgroundColor(getColor(R.color.white))
-                    loadQuestion()
-                }
+
             }
         }.start()
     }

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="60dp"
     android:layout_margin="10dp"
     app:cardElevation="6dp">
 
@@ -56,6 +56,17 @@
             android:textSize="16sp"
             android:fontFamily="casual"
             />
+
+        <Button
+            android:id="@+id/btnDeleteQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:backgroundTint="@color/warning_red"
+            android:padding="2dp"
+            android:fontFamily="casual"
+            android:text="@string/delete_question"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

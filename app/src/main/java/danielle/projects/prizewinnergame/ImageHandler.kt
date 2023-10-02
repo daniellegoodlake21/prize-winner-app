@@ -30,11 +30,7 @@ class ImageHandler {
             else
             {
 
-                var filename = "${imageType}_$imageIndex.jpg"
-                if (imageIndex == -1)
-                {
-                    filename = "${imageType}_FinalQuestion.jpg"
-                }
+                val filename = "${imageType}_$imageIndex.jpg"
                 val file = File(folder, filename)
                 if (!file.exists()) {
                     /* if the user has not selected an image then use the default
@@ -75,11 +71,7 @@ class ImageHandler {
             {
                 folder.mkdirs()
             }
-            var filename = "${imageType}_$imageIndex.jpg"
-            if (imageIndex == -1)
-            {
-                filename = "${imageType}_FinalQuestion.jpg"
-            }
+            val filename = "${imageType}_$imageIndex.jpg"
             val file = File(folder, filename)
             try
             {
@@ -102,5 +94,26 @@ class ImageHandler {
             }
         }
         return false
+    }
+
+    fun deleteImage(imageIndex: Int, context: Context)
+    {
+        try {
+            val folder = File(context.filesDir.path, "PrizeWinner/Images/Questions")
+            if (!folder.exists()) {
+                return
+            } else {
+
+                val filename = "Question_$imageIndex.jpg"
+                val file = File(folder, filename)
+                if (!file.exists()) {
+                    file.delete()
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
     }
 }

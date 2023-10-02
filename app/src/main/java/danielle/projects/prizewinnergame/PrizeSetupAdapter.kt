@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PrizeSetupAdapter(private val mList: List<PrizeViewModel>) : RecyclerView.Adapter<PrizeSetupAdapter.ViewHolder>() {
+class PrizeSetupAdapter(private val prizeEntities: List<PrizeEntity>) : RecyclerView.Adapter<PrizeSetupAdapter.ViewHolder>() {
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,24 +22,26 @@ class PrizeSetupAdapter(private val mList: List<PrizeViewModel>) : RecyclerView.
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // sets the image to the imageview from our itemHolder class
-        val prizeViewModel = mList[position]
+        val prizeEntity = prizeEntities[position]
         val imageHandler = ImageHandler()
-        val imageLoaded = imageHandler.loadImage(holder.imageViewPrizeImage, "Prize", position)
+        val imageLoaded = imageHandler.loadImage(holder.imageViewPrizeImage, "Prize", prizeEntity.prizeId)
         if (!imageLoaded)
         {
             holder.imageViewPrizeImage.setImageResource(R.drawable.gift)
         }
         // sets the text to the textview from our itemHolder class
-        holder.textViewPrizeTitle.text = prizeViewModel.title
+        holder.prizeId = prizeEntity.prizeId
+        holder.textViewPrizeTitle.text = prizeEntity.title
     }
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        return mList.size
+        return prizeEntities.size
     }
 
     // Holds the views for adding it to image and text
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        var prizeId = -1
         val imageViewPrizeImage: ImageView = itemView.findViewById(R.id.imageViewPrizeImage)
         val textViewPrizeTitle: TextView = itemView.findViewById(R.id.textViewPrizeTitle)
 
@@ -49,7 +51,7 @@ class PrizeSetupAdapter(private val mList: List<PrizeViewModel>) : RecyclerView.
 
         override fun onClick(v: View?) {
             val intent = Intent(v?.context, EditPrizeActivity::class.java)
-            intent.putExtra("prizeId", adapterPosition.toString())
+            intent.putExtra("prizeId", prizeId.toString())
             v?.context?.startActivity(intent)
         }
     }

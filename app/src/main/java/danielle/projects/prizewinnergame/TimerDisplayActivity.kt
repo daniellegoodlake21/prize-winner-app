@@ -5,18 +5,24 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 
 open class TimerDisplayActivity : AppCompatActivity() {
 
     protected fun startTimer()
     {
-        val quizFileHandler = QuizFileHandler(filesDir.absolutePath)
-        val timeLimit = quizFileHandler.readQuiz().timeLimit
+        lifecycleScope.launch {
+            val quizDao = (application as PrizeWinnerApp).database.quizDao()
+            quizDao.fetchAllQuizzes().collect{ quizAsList ->
+                val timeLimit = quizAsList[0].timer
+                val serviceIntent = Intent(this@TimerDisplayActivity, QuizTimerService::class.java)
+                serviceIntent.putExtra(Constants.TIME_LIMIT_IN_SECONDS, timeLimit)
+                startService(serviceIntent)
+            }
+        }
 
-        val serviceIntent = Intent(this, QuizTimerService::class.java)
-        serviceIntent.putExtra(Constants.TIME_LIMIT_IN_SECONDS, timeLimit)
-        startService(serviceIntent)
     }
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {

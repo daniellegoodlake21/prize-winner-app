@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import danielle.projects.prizewinnergame.databinding.ActivityFinalQuizQuestionBinding
+import kotlinx.coroutines.launch
 
 class FinalQuizQuestionActivity : QuizQuestionActivity() {
 
@@ -21,36 +23,43 @@ class FinalQuizQuestionActivity : QuizQuestionActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding?.root)
         questionId = -1
-        loadQuestion()
+        lifecycleScope.launch {
+            loadQuestion()
+        }
+
     }
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         return
     }
-    override fun loadQuestion()
+    override suspend fun loadQuestion()
     {
-        val question: QuestionViewModel = questionFileHandler!!.readQuestion(questionId!!)
+        val questionDao = (application as PrizeWinnerApp).database.questionDao()
+        questionDao.fetchFinalQuestion().collect{ finalQuestionAsList ->
+            val question: QuestionEntity = finalQuestionAsList[0]
 
-        textViewQuestionTitle = binding?.textViewQuestionTitle
-        textViewQuestionTitle?.text = question.question
+            textViewQuestionTitle = binding?.textViewQuestionTitle
+            textViewQuestionTitle?.text = question.question
 
-        textViewChoiceA = binding?.textViewChoiceA
-        textViewChoiceA?.text = question.choiceA
-        textViewChoiceA?.setOnClickListener{
-            handleAnswer(0)
+            textViewChoiceA = binding?.textViewChoiceA
+            textViewChoiceA?.text = question.choiceA
+            textViewChoiceA?.setOnClickListener{
+                handleAnswer(0)
+            }
+
+            textViewChoiceB = binding?.textViewChoiceB
+            textViewChoiceB?.text = question.choiceB
+            textViewChoiceB?.setOnClickListener{
+                handleAnswer(1)
+            }
+
+            imageViewQuestionImage = binding?.imageViewQuestionImage
+            imageHandler!!.loadImage(imageViewQuestionImage!!, "Question", question.id)
+
+            correctAnswer = question.correctAnswer
         }
 
-        textViewChoiceB = binding?.textViewChoiceB
-        textViewChoiceB?.text = question.choiceB
-        textViewChoiceB?.setOnClickListener{
-            handleAnswer(1)
-        }
-
-        imageViewQuestionImage = binding?.imageViewQuestionImage
-        imageHandler!!.loadImage(imageViewQuestionImage!!, "Question", questionId!!)
-
-        correctAnswer = question.correctAnswer
     }
 
     private fun handleAnswer(selectedAnswerIndex: Int)
